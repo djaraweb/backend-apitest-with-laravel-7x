@@ -11,6 +11,6 @@ $factory->define(Directorio::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'direction' => $faker->address,
         'phone' => $faker->tollFreePhoneNumber,
-        'urlavatar' => $faker->imageUrl,
+        'avatar' => $faker->imageUrl,
     ];
 });

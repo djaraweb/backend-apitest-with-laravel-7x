@@ -7,8 +7,9 @@ use App\Directorio;
 
 use App\Http\Requests\CreateDirectorioRequest;
 use App\Http\Requests\UpdateDirectorioRequest;
+use Illuminate\Support\Facades\Storage;
 
-class DirectorioController extends Controller
+class DirectorioController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -21,13 +22,23 @@ class DirectorioController extends Controller
             $txtfiltro = $request->get('txtbuscar');
             $directorios = Directorio::where('name','like',"%$txtfiltro%")
                                     ->orWhere('phone','like',"%$txtfiltro%")
+                                    ->orderBy('name','asc')
                                     ->get();
         }else{
-            $directorios = Directorio::get();
+            $directorios = Directorio::orderBy('name','asc')->get();
         }
 
-       return $directorios;
+        return $this->responseToSuccess(compact('directorios'));
     }
+
+    private function uploadAvatarContact($file){
+        $nameFile = time().".". $file->getClientOriginalExtension();
+        $pathFile = Storage::putFileAs('avatarContact',$file, $nameFile);
+        $pathFile = asset('upload/'.$pathFile);
+
+        return $pathFile;
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -37,12 +48,12 @@ class DirectorioController extends Controller
      */
     public function store(CreateDirectorioRequest $request)
     {
-        $input = $request->all();
+         $input = $request->all();
+        if ($request->has('avatar'))
+            $input['avatar'] = $this->uploadAvatarContact($request->avatar);
+
         Directorio::create($input);
-        return response()->json([
-            'codeRpta' => 200,
-            'message' => 'Registro Creado correctamente'
-        ], 200);
+        return $this->responseToSuccess('Registro Creado correctamente');
     }
 
     /**
@@ -53,7 +64,7 @@ class DirectorioController extends Controller
      */
     public function show(Directorio $directorio)
     {
-        return $directorio;
+        return $this->responseToSuccess(compact('directorio'));
     }
 
     /**
@@ -65,14 +76,14 @@ class DirectorioController extends Controller
      */
     public function update(UpdateDirectorioRequest $request, Directorio $directorio)
     {
-        //return response()->json(['rpta'=>'ok']);
-
         $input = $request->all();
+        if ($request->has('avatar'))
+            $input['avatar'] = $this->uploadAvatarContact($request->avatar);
+
         $directorio->update($input);
-        return response()->json([
-            'codeRpta' => 200,
-            'message' => 'Registro Actualizado correctamente'
-        ], 200);
+
+        return $this->responseToSuccess('Registro Actualizado correctamente');
+
     }
 
     /**
@@ -81,13 +92,9 @@ class DirectorioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Directorio $directorio)
     {
-        Directorio::destroy($id);
-
-        return response()->json([
-            'codeRpta' => 200,
-            'message' => 'Registro Borrado correctamente'
-        ], 200);
+        $directorio->delete();
+        return $this->responseToSuccess('Registro Borrado correctamente');
     }
 }

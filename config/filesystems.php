@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'public_upload'),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,6 +53,12 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+        ],
+
+        'public_upload' => [
+            'driver' => 'local',
+            /* Esta configuracion se realiza en AppServiceProvider */
+            'root' => base_path().'/../public_html/acsys.djara.dev/sysapitest.laravel/upload'
         ],
 
         's3' => [

@@ -19,7 +19,7 @@ class CreateDirectorioTable extends Migration
             $table->string('email', 100)->unique()->nullable();
             $table->string('direction')->nullable();
             $table->string('phone',50)->unique();
-            $table->string('urlavatar')->nullable();
+            $table->string('avatar')->nullable();
 
             $table->timestamps();
         });

@@ -24,10 +24,19 @@ class CreateDirectorioRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:100',
-            'email' => 'required|email',
+            'name' => 'required|min:5|max:150',
+            'email' => 'required|email|unique:directorios,email',
             'phone' => 'required|unique:directorios,phone',
-
+            'avatar' => 'file|image|max:8192|dimensions:max_width=500,max_height=500',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'avatar.max' => "Maximum file size to upload is 8MB (8192 KB). If you are uploading a photo, try to reduce its resolution to make it under 8MB"
+        ];
+    }
+
+
 }

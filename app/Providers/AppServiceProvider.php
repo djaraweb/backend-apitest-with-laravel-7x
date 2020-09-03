@@ -22,6 +22,15 @@ class AppServiceProvider extends ServiceProvider
           $this->app->bind('path.public', function(){
             return '/home/djaravirtual/Projects/home/elecrtwh/public_html/acsys.djara.dev/sysapitest.laravel';
           });
+
+
+
+        $variables = [
+            'public_path()'=>public_path(),
+            'base_path()' => base_path(),
+            'storage_path()'=>storage_path(),
+        ];
+        //dd($variables);
     }
 
     /**
