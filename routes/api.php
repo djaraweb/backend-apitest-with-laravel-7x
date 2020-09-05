@@ -8,13 +8,15 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login','UserController@login')->name('login');
     Route::group(['middleware' => 'auth:api'], function() {
         Route::post('register','UserController@register');
-        Route::ApiResource('directorios','DirectorioController');
+
         Route::post('logout','UserController@logout');
         Route::get('user', function (Request $request) {
             return $request->user();
         });
     });
 });
+
+Route::ApiResource('directorios','DirectorioController');
 
 Route::get('/tasks','TaskController@index');
 Route::post('/tasks','TaskController@store');
