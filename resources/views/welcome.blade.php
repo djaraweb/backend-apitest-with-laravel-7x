@@ -83,7 +83,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    API TEST With Laravel Framework 7.26.1
+                    API TEST With Laravel Framework 7.30.40
                 </div>
             </div>
         </div>
