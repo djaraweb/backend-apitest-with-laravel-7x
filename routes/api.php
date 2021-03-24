@@ -6,10 +6,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login','UserController@login')->name('login');
-    Route::group(['middleware' => 'auth:api'], function() {
-        Route::post('register','UserController@register');
+    Route::post('register','UserController@register')->name('register');
 
-        Route::post('logout','UserController@logout');
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::post('logout','UserController@logout')->name('logout');
+
+        // Tasks
+        Route::get('/tasks','TaskController@index')->name('tasks.index');
+        Route::post('/tasks','TaskController@store')->name('tasks.store');
+        Route::put('/tasks/{task}','TaskController@update')->name('tasks.update');       
+        //Route::patch('/tasksCheckAll','TaskController@updateAll');
+        Route::delete('/tasks/{task}','TaskController@destroy')->name('tasks.destroy');
+        //Route::delete('/tasksDeleteCompleted','TaskController@destroyCompleted');
+
+        // Otros
         Route::get('user', function (Request $request) {
             return $request->user();
         });
@@ -17,11 +27,4 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::ApiResource('directorios','DirectorioController');
-
-Route::get('/tasks','TaskController@index');
-Route::post('/tasks','TaskController@store');
-Route::put('/tasks/{task}','TaskController@update');
-Route::patch('/tasksCheckAll','TaskController@updateAll');
-Route::delete('/tasks/{task}','TaskController@destroy');
-Route::delete('/tasksDeleteCompleted','TaskController@destroyCompleted');
 

@@ -12,12 +12,24 @@ class TaskController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::orderBy('id','desc')->get();
+        $var_campo =  $request->get('field');
+        $var_value = $request->get('valuefield');
 
-        return $this->responseToSuccess(compact('tasks'));
+        if ($var_value){
+            $tasks = Task::where($var_campo, 'like', '%'. $var_value . '%')
+                            ->orderBy('id','desc')
+                            ->paginate();
+        }else {
+            $tasks = Task::orderBy('id','desc')->paginate();
+        }
+
+        return $this->responseToCollection(compact('tasks'));
+
     }
+
+
 
     /**
      * Store a newly created resource in storage.
