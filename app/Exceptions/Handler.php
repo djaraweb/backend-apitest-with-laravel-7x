@@ -62,8 +62,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        // forma de como realizar un test en las exepciones:
-        //dd($exception);
+        // forma de como realizar un test en las exepciones:     
 
         if ($exception instanceof ValidationException){
             return $this->convertValidationExceptionToResponse($exception, $request);

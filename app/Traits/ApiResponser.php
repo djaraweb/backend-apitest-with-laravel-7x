@@ -20,4 +20,10 @@ trait ApiResponser
 								$code);
     }
 
+    protected function responseToCollection($data, $code=200){
+		return response()->json(['body'=>$data,
+								 'code'=>$code],
+								$code);
+    }
+
 }
